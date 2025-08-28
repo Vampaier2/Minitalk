@@ -6,7 +6,7 @@
 /*   By: xalves <xalves@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:18:40 by xalves            #+#    #+#             */
-/*   Updated: 2025/08/27 16:45:17 by xalves           ###   ########.fr       */
+/*   Updated: 2025/08/28 16:07:49 by xalves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,12 @@ void	recieved(int sig)
 {
 	if (sig == SIGUSR2)
 	{
-		ft_printf("Recieved sig");
+		ft_printf("Recieved sig\n");
+		exit (0);
+	}
+	if (sig == SIGINT)
+	{
+		ft_printf("Server was closed\n");
 		exit (0);
 	}
 }

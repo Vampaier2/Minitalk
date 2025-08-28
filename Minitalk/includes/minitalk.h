@@ -6,7 +6,7 @@
 /*   By: xalves <xalves@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 12:32:16 by xalves            #+#    #+#             */
-/*   Updated: 2025/08/27 14:28:46 by xalves           ###   ########.fr       */
+/*   Updated: 2025/08/28 13:16:30 by xalves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,16 +22,16 @@
 # include <stdlib.h>
 # include <string.h>
 # include <unistd.h>
-#include <signal.h>
+# include <signal.h>
 
 typedef struct s_server
 {
-	char	*str;
-	char	c;
-	int		len;
-	int		binary;
-	int		bits_len;
-	int		pos;
+	char	*str; // its the string >:3
+	char	current_char; // char being constructed bit by bit
+	int		msg_len; // msg len
+	int		char_bit_index; // Current bit pos in the char (0-7)
+	int		bits_pos; // current bit popsition
+	int		message_pos; // Current pos in the msg str
 }	t_server;
 
 void	*ft_calloc(size_t nmemb, size_t size);
