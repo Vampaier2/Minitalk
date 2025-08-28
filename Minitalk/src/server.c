@@ -55,7 +55,6 @@ void	handle_signal(int sig, siginfo_t *info, void *context)
 	if (sig == SIGINT)
 	{
 		printf("\nDetected Ctr+C (%d)\nStoping current Process.\n", sig);
-		kill(info->si_pid, SIGINT);
 	}
 	(void)context;
 	if (v.bits_pos >= 0)
