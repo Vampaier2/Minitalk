@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   server.current_char                                           :+:      :+:    :+:   */
+/*   server.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: xalves <xalves@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/08/20 16:18:40 by xalves            #+#    #+#             */
-/*   Updated: 2025/08/28 12:56:14 by xalves           ###   ########.fr       */
+/*   Created: 2025/08/29 10:28:11 by xalves            #+#    #+#             */
+/*   Updated: 2025/08/29 11:31:46 by xalves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,18 +45,20 @@ static int	msg(t_server *v)
 }
 
 /// @brief
-/// @param sig
-/// @param info
-/// @param context
+/// @param sig The signal number ex:(SIGUSR1, SIGUSR2)
+/// @param info Pointer to the signal information (PID)
+/// @param context A pointer to a structure (containing CPU states and more)
 void	handle_signal(int sig, siginfo_t *info, void *context)
 {
-	static t_server	v = {.current_char = 0, .bits_pos = 31, .msg_len = 0, .char_bit_index = 7};
+	static t_server	v = {.current_char = 0, .bits_pos = 31, .msg_len = 0,
+		.char_bit_index = 7};
 
+	(void)context;
 	if (sig == SIGINT)
 	{
 		printf("\nDetected Ctr+C (%d)\nStoping current Process.\n", sig);
+		kill(info->si_pid, SIGINT);
 	}
-	(void)context;
 	if (v.bits_pos >= 0)
 		v.msg_len |= ((sig == SIGUSR2) << v.bits_pos--);
 	else

@@ -6,7 +6,7 @@
 /*   By: xalves <xalves@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/07/08 12:32:16 by xalves            #+#    #+#             */
-/*   Updated: 2025/08/28 13:16:30 by xalves           ###   ########.fr       */
+/*   Updated: 2025/08/29 11:27:10 by xalves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@
 # include <string.h>
 # include <unistd.h>
 # include <signal.h>
+
+//# define malloc(x) NULL
 
 typedef struct s_server
 {
