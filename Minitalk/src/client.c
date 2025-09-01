@@ -6,7 +6,7 @@
 /*   By: xalves <xalves@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:18:40 by xalves            #+#    #+#             */
-/*   Updated: 2025/08/29 11:31:52 by xalves           ###   ########.fr       */
+/*   Updated: 2025/09/01 15:04:57 by xalves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	recieved(int sig)
 {
 	if (sig == SIGUSR2)
 	{
-		ft_printf("Recieved sig\n");
-		exit (0);
+		ft_printf("Message was received by server\n");
+		exit(0);
 	}
 }
 
@@ -54,9 +54,9 @@ static void	send_str(char chr, int pid)
 	while (i >= 0)
 	{
 		if ((chr >> i) & 1)
-			kill (pid, SIGUSR2);
+			kill(pid, SIGUSR2);
 		else
-			kill (pid, SIGUSR1);
+			kill(pid, SIGUSR1);
 		i--;
 		usleep(1500);
 	}
@@ -80,23 +80,26 @@ static void	send_len(char *str, int pid)
 	}
 }
 
+/* AあЖ€😊🐴 */
 int	main(int argc, char **argv)
 {
 	int	pid;
+	int	i;
 
 	signal(SIGUSR1, recieved);
 	signal(SIGUSR2, recieved);
 	if (argc != 3)
 	{
-		ft_printerror("Insuficiente number of arguments\n");
+		ft_printerror("Invalid number of arguments\n");
 		return (0);
 	}
 	pid = ft_atoi(argv[1]);
 	if (pid < 1 || kill(pid, 0) == -1)
 		return (ft_printerror("Invalid PID\n"), 1);
-	send_len (argv[2], pid);
-	while (*argv[2])
-		send_str(*argv[2]++, pid);
+	send_len(argv[2], pid);
+	i = 0;
+	while (argv[2][i])
+		send_str(argv[2][i++], pid);
 	while (1)
 		pause();
 }

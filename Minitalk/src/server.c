@@ -6,7 +6,7 @@
 /*   By: xalves <xalves@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/29 10:28:11 by xalves            #+#    #+#             */
-/*   Updated: 2025/08/29 11:31:46 by xalves           ###   ########.fr       */
+/*   Updated: 2025/09/01 18:16:18 by xalves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,20 +23,19 @@ static void	print_and_reset(t_server *v)
 
 static int	msg(t_server *v)
 {
-	if (!v->str)
+	if (!v->str) // if string doesnt exist allocate
 	{
-		v->str = malloc(v->msg_len + 1);
+		v->str = ft_calloc(v->msg_len + 1, sizeof(char *));
 		if (!v->str)
 			exit(1);
 		v->message_pos = 0;
 	}
-	if (v->message_pos < v->msg_len)
+	if (v->message_pos < v->msg_len) // stores the current_char in str
 		v->str[v->message_pos++] = v->current_char;
 	v->current_char = 0;
 	v->char_bit_index = 7;
 	if (v->message_pos == v->msg_len)
 	{
-		v->str[v->message_pos] = '\0';
 		print_and_reset(v);
 		v->message_pos = 0;
 		return (1);
@@ -44,7 +43,7 @@ static int	msg(t_server *v)
 	return (0);
 }
 
-/// @brief
+/// @brief function that runs when detect signals
 /// @param sig The signal number ex:(SIGUSR1, SIGUSR2)
 /// @param info Pointer to the signal information (PID)
 /// @param context A pointer to a structure (containing CPU states and more)
@@ -55,24 +54,23 @@ void	handle_signal(int sig, siginfo_t *info, void *context)
 
 	(void)context;
 	if (sig == SIGINT)
-	{
-		printf("\nDetected Ctr+C (%d)\nStoping current Process.\n", sig);
-		kill(info->si_pid, SIGINT);
-	}
+		ft_printerror("\nDetected Ctr+C (%d)\nStoping current Process.\n", sig);
 	if (v.bits_pos >= 0)
 		v.msg_len |= ((sig == SIGUSR2) << v.bits_pos--);
 	else
 	{
 		if (sig == SIGUSR2)
 			v.current_char |= (1 << v.char_bit_index);
-		if (v.char_bit_index-- == 0)
+		if (v.char_bit_index == 0)
 		{
 			if (msg(&v))
 			{
-				kill(info->si_pid, SIGUSR2); // Reply to sender with SIGUSR2
+				kill(info->si_pid, SIGUSR2);
 				return ;
 			}
 		}
+		else
+			v.char_bit_index--;
 	}
 	kill(info->si_pid, SIGUSR1);
 }
@@ -88,8 +86,9 @@ int	main(void)
 	sigemptyset(&signal.sa_mask);
 	signal.sa_flags = SA_SIGINFO;
 	pid = getpid();
-	ft_putnbr_fd(pid, 1);
-	write(1, "\n", 1);
+	ft_printf("%d\n", pid);
+	/* ft_putnbr_fd(pid, 1);
+	write(1, "\n", 1); */
 	sigaction(SIGUSR1, &signal, NULL);
 	sigaction(SIGUSR2, &signal, NULL);
 	sigaction(SIGINT, &signal, NULL);
