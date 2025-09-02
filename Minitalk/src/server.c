@@ -6,7 +6,7 @@
 /*   By: xalves <xalves@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/29 10:28:11 by xalves            #+#    #+#             */
-/*   Updated: 2025/09/01 18:16:18 by xalves           ###   ########.fr       */
+/*   Updated: 2025/09/02 10:01:32 by xalves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,14 @@ static void	print_and_reset(t_server *v)
 
 static int	msg(t_server *v)
 {
-	if (!v->str) // if string doesnt exist allocate
+	if (!v->str)
 	{
 		v->str = ft_calloc(v->msg_len + 1, sizeof(char *));
 		if (!v->str)
 			exit(1);
 		v->message_pos = 0;
 	}
-	if (v->message_pos < v->msg_len) // stores the current_char in str
+	if (v->message_pos < v->msg_len)
 		v->str[v->message_pos++] = v->current_char;
 	v->current_char = 0;
 	v->char_bit_index = 7;
@@ -86,9 +86,7 @@ int	main(void)
 	sigemptyset(&signal.sa_mask);
 	signal.sa_flags = SA_SIGINFO;
 	pid = getpid();
-	ft_printf("%d\n", pid);
-	/* ft_putnbr_fd(pid, 1);
-	write(1, "\n", 1); */
+	ft_printf("Server PID -> %d\n", pid);
 	sigaction(SIGUSR1, &signal, NULL);
 	sigaction(SIGUSR2, &signal, NULL);
 	sigaction(SIGINT, &signal, NULL);

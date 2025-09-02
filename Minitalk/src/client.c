@@ -6,7 +6,7 @@
 /*   By: xalves <xalves@student.42lisboa.com>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/08/20 16:18:40 by xalves            #+#    #+#             */
-/*   Updated: 2025/09/01 15:04:57 by xalves           ###   ########.fr       */
+/*   Updated: 2025/09/02 12:02:25 by xalves           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,8 +98,16 @@ int	main(int argc, char **argv)
 		return (ft_printerror("Invalid PID\n"), 1);
 	send_len(argv[2], pid);
 	i = 0;
-	while (argv[2][i])
-		send_str(argv[2][i++], pid);
+	if (!argv[2][i])
+	{
+		send_str('\0', pid);
+	}
+	else
+	{
+		while (argv[2][i])
+			send_str(argv[2][i++], pid);
+	}
+
 	while (1)
 		pause();
 }
